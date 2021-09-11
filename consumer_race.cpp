@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <fstream>
+
 #include "defs.h"
 
 extern int buffer[BUF_SIZE];
@@ -16,13 +18,18 @@ extern sem_t buffer_access;
 void* consumer(void* param) {
 	printf("consumer started with count = %d\n", count);
 	int loop = atoi( (char *) param);
+
+	std::ofstream file;
+	file.open("c_race.txt");
+
 	for (int i = 0; i < loop; i++) {
 
 		while (count <= 0) ; // wait
 
 		int consume_item_id = buffer[get_index];
 		get_index = ++get_index % BUF_SIZE;
-		printf("consumer(%d)\n", consume_item_id);
+		printf("%d - consumer(%d)\n", i, consume_item_id);
+		file << consume_item_id << std::endl;
 
 		// To simulate what CPU instructions do for --count
 		int reg = count;
@@ -30,5 +37,7 @@ void* consumer(void* param) {
 		usleep(rand() % 1000000); // to increase probability of race condition
 		count = reg;
 	}
-	exit(0);
+	file.close();
+	// pthread_exit(0);
+	exit(0); // whole program quits
 }
