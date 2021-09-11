@@ -1,1 +1,1 @@
-const int BUF_SIZE = 3;
+const int BUF_SIZE = 5;
