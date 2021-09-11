@@ -11,13 +11,12 @@ extern int count;
 extern int put_index;
 extern int get_index;
 
-const int LOOP = 100;
-
 extern sem_t buffer_access;
 
 void* producer(void* param) {
 	printf("producer started with count = %d\n", count);
-	for (int i = 0; i < LOOP; i++) {
+	int loop = atoi( (char *) param);
+	for (int i = 0; i < loop; i++) {
 
 		while (count >= BUF_SIZE) ; // wait
 
@@ -33,4 +32,5 @@ void* producer(void* param) {
 		count = reg;
 
 	}
+	exit(0);
 }

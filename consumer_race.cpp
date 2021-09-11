@@ -11,13 +11,12 @@ extern int count;
 extern int put_index;
 extern int get_index;
 
-const int LOOP = 100;
-
 extern sem_t buffer_access;
 
 void* consumer(void* param) {
 	printf("consumer started with count = %d\n", count);
-	for (int i = 0; i < LOOP; i++) {
+	int loop = atoi( (char *) param);
+	for (int i = 0; i < loop; i++) {
 
 		while (count <= 0) ; // wait
 
@@ -30,6 +29,6 @@ void* consumer(void* param) {
 		--reg;
 		usleep(rand() % 1000000); // to increase probability of race condition
 		count = reg;
-
 	}
+	exit(0);
 }

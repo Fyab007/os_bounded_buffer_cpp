@@ -16,7 +16,13 @@ sem_t buffer_access;
 extern void* producer(void* param);
 extern void* consumer(void* param);
 
-int main() {
+int main(int argc, char **argv) {
+
+	if (argc != 2) {
+		printf("Usage: %s loop_count\n", argv[0]);
+		exit(1);
+	}
+
 	sem_init(&buffer_access, 0, 1);
 
 	pthread_t t_producer1;
@@ -26,8 +32,8 @@ int main() {
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 
-	pthread_create(&t_producer1, &attr, producer, (void *) NULL);
-	pthread_create(&t_consumer, &attr, consumer, (void *) NULL);
+	pthread_create(&t_producer1, &attr, producer, (void *) argv[1]);
+	pthread_create(&t_consumer, &attr, consumer, (void *) argv[1]);
 
 	pthread_join(t_producer1, NULL);
 	pthread_join(t_consumer, NULL);
