@@ -36,7 +36,7 @@ void* consumer(void* params) {
 		// enters critical section
 		int consume_item_id = buffer[get_index];
 		get_index = ++get_index % BUF_SIZE;
-		printf("%d - Consumer(%d)\n", i, consume_item_id);
+		printf("  %d - Consumer(%d)\n", i, consume_item_id);
 		file << consume_item_id << std::endl;
 
 		// To simulate what CPU instructions do for --count
