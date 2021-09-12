@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <string.h>
 
 #include "defs.h"
 
@@ -38,8 +39,16 @@ int main(int argc, char **argv) {
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 
-	pthread_create(&t_producer1, &attr, producer, (void *) argv[1]);
-	pthread_create(&t_consumer, &attr, consumer, (void *) argv[1]);
+	// pass argv[1] and filename to thread
+	Parameters* p_params = new Parameters;
+	p_params->loop_count = atoi(argv[1]);
+	strcpy(p_params->filename, "prod.txt");
+	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
+
+	Parameters* c_params = new Parameters;
+	c_params->loop_count = atoi(argv[1]);
+	strcpy(c_params->filename, "cons.txt");
+	pthread_create(&t_consumer, &attr, consumer, (void *) c_params);
 
 	pthread_join(t_producer1, NULL);
 	pthread_join(t_consumer, NULL);

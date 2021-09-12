@@ -17,12 +17,13 @@ extern pthread_mutex_t mutex;
 extern sem_t full;
 extern sem_t empty;
 
-void* consumer(void* param) {
+void* consumer(void* params) {
 	printf("consumer started with count = %d\n", count);
-	int loop = atoi( (char *) param);
+	Parameters* passed_params = (Parameters*) params;
+	int loop = passed_params->loop_count;
 
 	std::ofstream file;
-	file.open("c.txt");
+	file.open(passed_params->filename);
 
 	for (int i = 0; i < loop; i++) {
 
@@ -35,7 +36,7 @@ void* consumer(void* param) {
 		// enters critical section
 		int consume_item_id = buffer[get_index];
 		get_index = ++get_index % BUF_SIZE;
-		printf("%d - consumer(%d)\n", i, consume_item_id);
+		printf("%d - Consumer(%d)\n", i, consume_item_id);
 		file << consume_item_id << std::endl;
 
 		// To simulate what CPU instructions do for --count

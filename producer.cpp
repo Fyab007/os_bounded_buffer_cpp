@@ -17,12 +17,13 @@ extern pthread_mutex_t mutex;
 extern sem_t full;
 extern sem_t empty;
 
-void* producer(void* param) {
+void* producer(void* params) {
 	printf("producer started with count = %d\n", count);
-	int loop = atoi( (char *) param);
+	Parameters* passed_params = (Parameters *) params;
+	int loop = passed_params->loop_count;
 
 	std::ofstream file;
-	file.open("p.txt");
+	file.open((char*) passed_params->filename);
 
 	for (int i = 0; i < loop; i++) {
 
@@ -34,7 +35,7 @@ void* producer(void* param) {
 
 		// enters critical section
 		buffer[put_index] = item_id;
-		printf("%d - P[%d]\n", i, item_id);
+		printf("%d - Prod[%d]\n", i, item_id);
 		file << item_id << std::endl;
 		item_id++;
 		put_index = ++put_index % BUF_SIZE;
