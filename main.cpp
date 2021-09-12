@@ -18,8 +18,8 @@ pthread_mutex_t mutex;
 sem_t full;
 sem_t empty;
 
-extern void* producer(void* param);
-extern void* consumer(void* param);
+extern void* producer(void *);
+extern void* consumer(void *);
 
 int main(int argc, char **argv) {
 
@@ -46,13 +46,13 @@ int main(int argc, char **argv) {
 	pthread_attr_init(&attr);
 
 	// pass loop_count and filename to thread
-	Parameters* p_params = new Parameters;
+	parameters* p_params = new parameters;
 	p_params->loop_count = loop_count;
-	strcpy(p_params->filename, "prod.txt");
+	p_params->filename = (char *) "prod.txt";
 
-	Parameters* c_params = new Parameters;
+	parameters* c_params = new parameters;
 	c_params->loop_count = loop_count;
-	strcpy(c_params->filename, "cons.txt");
+	c_params->filename = (char *) "cons.txt";
 
 	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
 	pthread_create(&t_consumer, &attr, consumer, (void *) c_params);

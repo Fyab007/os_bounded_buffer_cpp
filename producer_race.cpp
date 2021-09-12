@@ -15,12 +15,13 @@ extern int get_index;
 
 extern sem_t buffer_access;
 
-void* producer(void* param) {
+void* producer(void* p) {
 	printf("producer started with count = %d\n", count);
-	int loop = atoi( (char *) param);
+	parameters* params = (parameters *) p;
+	int loop = params->loop_count;
 
 	std::ofstream file;
-	file.open("p_race.txt");
+	file.open(params->filename);
 
 	for (int i = 0; i < loop; i++) {
 

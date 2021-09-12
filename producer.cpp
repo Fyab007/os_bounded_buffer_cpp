@@ -17,13 +17,13 @@ extern pthread_mutex_t mutex;
 extern sem_t full;
 extern sem_t empty;
 
-void* producer(void* params) {
+void* producer(void* p) {
 	printf("producer started with count = %d\n", count);
-	Parameters* passed_params = (Parameters *) params;
-	int loop = passed_params->loop_count;
+	parameters* params = (parameters *) p;
+	int loop = params->loop_count;
 
 	std::ofstream file;
-	file.open(passed_params->filename);
+	file.open(params->filename);
 
 	for (int i = 0; i < loop; i++) {
 

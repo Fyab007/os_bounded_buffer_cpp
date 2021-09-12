@@ -23,4 +23,4 @@ consumer_race.o: consumer_race.cpp defs.h
 	g++ -c consumer_race.cpp
 
 clean:
-	rm *.o p0 p1
+	rm *.o p0 p1 *.txt

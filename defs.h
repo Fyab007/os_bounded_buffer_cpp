@@ -1,6 +1,6 @@
 const int BUF_SIZE = 5;
 
-struct Parameters {
+struct parameters {
 	int loop_count;
-	char filename[200];
+	char* filename;
 };
