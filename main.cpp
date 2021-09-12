@@ -24,7 +24,13 @@ extern void* consumer(void* param);
 int main(int argc, char **argv) {
 
 	if (argc != 2) {
-		printf("Usage: %s loop_count\n", argv[0]);
+		printf("Usage: %s max_loop_count\n", argv[0]);
+		exit(1);
+	}
+
+	int loop_count = atoi(argv[1]);
+	if (loop_count == 0) {
+		printf("Usage: %s max_loop_count\n", argv[0]);
 		exit(1);
 	}
 
@@ -39,15 +45,16 @@ int main(int argc, char **argv) {
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 
-	// pass argv[1] and filename to thread
+	// pass loop_count and filename to thread
 	Parameters* p_params = new Parameters;
-	p_params->loop_count = atoi(argv[1]);
+	p_params->loop_count = loop_count;
 	strcpy(p_params->filename, "prod.txt");
-	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
 
 	Parameters* c_params = new Parameters;
-	c_params->loop_count = atoi(argv[1]);
+	c_params->loop_count = loop_count;
 	strcpy(c_params->filename, "cons.txt");
+
+	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
 	pthread_create(&t_consumer, &attr, consumer, (void *) c_params);
 
 	pthread_join(t_producer1, NULL);
