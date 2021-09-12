@@ -23,7 +23,7 @@ void* producer(void* params) {
 	int loop = passed_params->loop_count;
 
 	std::ofstream file;
-	file.open((char*) passed_params->filename);
+	file.open(passed_params->filename);
 
 	for (int i = 0; i < loop; i++) {
 
