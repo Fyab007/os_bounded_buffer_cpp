@@ -27,8 +27,7 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
-	pthread_t t_producer1;
-	pthread_t t_producer2;
+	pthread_t t_producer;
 	pthread_t t_consumer;
 
 	pthread_attr_t attr;
@@ -43,10 +42,10 @@ int main(int argc, char **argv) {
 	c_params->loop_count = loop_count;
 	c_params->filename = (char *) "cons_race.txt";
 
-	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
+	pthread_create(&t_producer, &attr, producer, (void *) p_params);
 	pthread_create(&t_consumer, &attr, consumer, (void *) c_params);
 
-	pthread_join(t_producer1, NULL);
+	pthread_join(t_producer, NULL);
 	pthread_join(t_consumer, NULL);
 
 }

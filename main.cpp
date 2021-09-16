@@ -15,8 +15,8 @@ int get_index = 0; // consumer gets an item from this index
 // mutex to access the buffer
 pthread_mutex_t mutex;
 // counting semaphores for buffer resources
-sem_t full;
-sem_t empty;
+sem_t full; // # of items in the buffer
+sem_t empty; // # of empty slots in the buffer
 
 extern void* producer(void *);
 extern void* consumer(void *);
@@ -38,8 +38,7 @@ int main(int argc, char **argv) {
 	sem_init(&empty, 0, BUF_SIZE);
 	sem_init(&full, 0, 0);
 
-	pthread_t t_producer1;
-	pthread_t t_producer2;
+	pthread_t t_producer;
 	pthread_t t_consumer;
 
 	pthread_attr_t attr;
@@ -54,10 +53,10 @@ int main(int argc, char **argv) {
 	c_params->loop_count = loop_count;
 	c_params->filename = (char *) "cons.txt";
 
-	pthread_create(&t_producer1, &attr, producer, (void *) p_params);
+	pthread_create(&t_producer, &attr, producer, (void *) p_params);
 	pthread_create(&t_consumer, &attr, consumer, (void *) c_params);
 
-	pthread_join(t_producer1, NULL);
+	pthread_join(t_producer, NULL);
 	pthread_join(t_consumer, NULL);
 
 }
