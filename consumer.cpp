@@ -13,9 +13,7 @@ extern int count;
 extern int put_index;
 extern int get_index;
 
-extern pthread_mutex_t mutex;
-extern sem_t full;
-extern sem_t empty;
+
 
 void* consumer(void* p) {
 	printf("consumer started with count = %d\n", count);
